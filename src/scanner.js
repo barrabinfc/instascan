@@ -317,6 +317,8 @@ class Scanner extends EventEmitter {
 
     let video = opts.video || document.createElement('video');
     video.setAttribute('autoplay', 'autoplay');
+    video.setAttribute('playsinline', true);
+    video.setAttribute('muted', true);
 
     return video;
   }

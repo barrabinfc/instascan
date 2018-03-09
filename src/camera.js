@@ -21,13 +21,9 @@ class Camera {
     let constraints = {
       audio: false,
       video: {
-        mandatory: {
-          sourceId: this.id,
-          minWidth: 600,
-          maxWidth: 800,
-          minAspectRatio: 1.6
-        },
-        optional: []
+        deviceId: {
+          exact: this.id,
+        }
       }
     };
 
@@ -61,16 +57,13 @@ class Camera {
 
   static async _ensureAccess() {
     return await this._wrapErrors(async () => {
-      let access = await navigator.mediaDevices.getUserMedia({ video: true });
-      for (let stream of access.getVideoTracks()) {
-        stream.stop();
-      }
+      await navigator.mediaDevices.getUserMedia({ video: true });
     });
   }
 
   static async _wrapErrors(fn) {
     try {
-      return await fn();
+      return fn();
     } catch (e) {
       if (e.name) {
         throw new MediaError(e.name);
